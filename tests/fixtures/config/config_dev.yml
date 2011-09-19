@@ -1,0 +1,5 @@
+group1:
+  param1: true
+  param2:
+    param2-1: true
+    param2-2: true
