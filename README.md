@@ -1,10 +1,13 @@
 Digex
 =====
 
-A toolbox for Silex Framework
+A toolbox for the Silex Framework
 
 * Yaml config
-* auto-enable some usefull Silex extensions
+* Auto-enable some usefull Silex extensions from config files
+    * UrlGeneratorExtension
+    * TwigExtension
+    * MonologExtension
 
 Authors
 -------
@@ -25,7 +28,7 @@ Changelog
 
 Todo
 ----
-* use SimplePhar to compile the lib into a phar file
+* use SimplePhar to compile the lib into a phar file (https://github.com/CHH/SimplePhar)
 * Cache the Yaml config
 * Check server config with CLI
 * Init sandbox with CLI
