@@ -2,7 +2,6 @@
 
 /**
  * @author Damien Pitard <dpitard at digitas.fr>
- * @version $Id$
  */
 
 //require_once 'phar://' . __DIR__.'/../../silex.phar/autoload.php';

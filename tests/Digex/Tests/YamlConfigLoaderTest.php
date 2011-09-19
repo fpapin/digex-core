@@ -8,7 +8,6 @@ use Digex\YamlConfigLoader;
  * YamlConfigLoaderTest
  *
  * @author Damien Pitard <dpitard at digitas.fr>
- * @version $Id$
  */
 class YamlConfigLoaderTest extends \PHPUnit_Framework_TestCase
 {

@@ -11,7 +11,6 @@ use Digex\YamlConfigLoader;
  * Digitas application, init some parameters and load config files.
  * 
  * @author Damien Pitard <dpitard at digitas.fr>
- * @version $Id$
  */
 class ApplicationExtension implements ExtensionInterface {
 

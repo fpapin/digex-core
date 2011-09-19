@@ -8,7 +8,6 @@ use Symfony\Component\Yaml\Yaml;
  * YamlConfigLoader
  *
  * @author Damien Pitard <dpitard at digitas.fr>
- * @version $Id$
  */
 class YamlConfigLoader
 {
