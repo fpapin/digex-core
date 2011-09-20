@@ -28,33 +28,8 @@ class Compiler
         if ($process->run() > 0) {
             throw new \RuntimeException('The git binary cannot be found.');
         }
-        $last = trim($process->getOutput());
+        $this->version = trim($process->getOutput());
 
-//        $process = new Process('git log --pretty="%ci" -n1 HEAD');
-//        $process->run();
-//        $date = trim($process->getOutput());
-         
-        //get tag containing the commit
-        $process = new Process("git tag --contains `$last`");
-        $process->run();
-        $tag = trim($process->getOutput());
-
-        if ($tag && $tag !== '') {
-            //check that no commits has been made after the tag
-            $process = new Process('git log --pretty="%h" -n1 --tags=' . $tag);
-            $process->run();
-            $lastFromTag = trim($process->getOutput());
-          
-            if ($last !== $lastFromTag) {
-                $tag = '?';
-            }
-        } else {
-            $tag = '?';
-        }
-        
-//        $this->version = $tag . ' (' . $last . ') ' . $date;
-        $this->version = $tag . ' (' . $last . ')';
-        
         $phar = new \Phar($pharFile, 0, 'digex.phar');
         $phar->setSignatureAlgorithm(\Phar::SHA1);
 
@@ -86,7 +61,7 @@ class Compiler
 
         unset($phar);
         
-        printf("Digex v%s compiled...\n",$this->version);
+        printf("Digex #%s compiled...\n",$this->version);
     }
 
     /**
@@ -145,7 +120,7 @@ require_once 'phar://digex.phar/autoload.php';
 if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
     switch ($_SERVER['argv'][1]) {
         case 'version':
-            printf("Digex v%s\n", Digex\Digex::VERSION);
+            printf("Digex #%s\n", Digex\Digex::VERSION);
             break;
 
         default:
