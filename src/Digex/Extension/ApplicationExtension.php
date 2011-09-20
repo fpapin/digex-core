@@ -4,7 +4,6 @@ namespace Digex\Extension;
 
 use Silex\Application;
 use Silex\ExtensionInterface;
-use Digex\YamlConfigLoader;
 
 /**
  * This is a lazzy extension that enables some common extension for a standard
@@ -12,7 +11,8 @@ use Digex\YamlConfigLoader;
  * 
  * @author Damien Pitard <dpitard at digitas.fr>
  */
-class ApplicationExtension implements ExtensionInterface {
+class ApplicationExtension implements ExtensionInterface
+{
 
     public function register(Application $app)
     {
@@ -27,26 +27,16 @@ class ApplicationExtension implements ExtensionInterface {
         if (!isset($app['config_dir'])) {
             $app['config_dir'] = $app['app_dir'] . '/config';
         }
-        
-        //load the config
-        $loader = new YamlConfigLoader();
-        $parameters = $loader->load($app['config_dir']);
-        
-        //enable/disable the debug mode
-        if (isset($parameters['app']['debug'])) {
-            $app['debug'] = $parameters['app']['debug'];
-        }
-        
-        //inject config into the container
-        $app['config'] = $parameters;
+
+        $app->register(new ConfigurationExtension());
         
         //register UrlGeneratorExtension
-        if (isset($parameters['app']['extensions']['url_generator']) && $parameters['app']['extensions']['url_generator']) {
+        if (isset( $app['config']['app']['extensions']['url_generator']) &&  $app['config']['app']['extensions']['url_generator']) {
             $app->register(new \Silex\Extension\UrlGeneratorExtension());
         }
 
         //register Twig
-        if (isset($parameters['app']['extensions']['twig']) && $parameters['app']['extensions']['twig']) {
+        if (isset( $app['config']['app']['extensions']['twig']) &&  $app['config']['app']['extensions']['twig']) {
 
             if (!isset($app['twig.path'])) {
                 $app['twig.path'] = $app['app_dir'] . '/Resources/views';
@@ -64,7 +54,7 @@ class ApplicationExtension implements ExtensionInterface {
         }
 
         //register Monolog
-        if (isset($parameters['app']['extensions']['monolog']) && $parameters['app']['extensions']['monolog']) {
+        if (isset( $app['config']['app']['extensions']['monolog']) &&  $app['config']['app']['extensions']['monolog']) {
             $app->register(new \Silex\Extension\MonologExtension(), array(
                 'monolog.logfile'       => $app['app_dir'].'/logs/app.log',
                 'monolog.class_path'    => $app['vendor_dir'].'/monolog/src',
