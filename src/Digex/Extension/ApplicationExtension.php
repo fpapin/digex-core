@@ -16,12 +16,16 @@ class ApplicationExtension implements ExtensionInterface {
 
     public function register(Application $app)
     {
-        if (!isset($app['root_dir'])) {
-            throw new \Exception("Please set a \$app['root_dir'] parameter");
+        if (!isset($app['app_dir'])) {
+            throw new \Exception("Please set a \$app['app_dir'] parameter");
+        }
+        
+        if (!isset($app['vendor_dir'])) {
+            throw new \Exception("Please set a \$app['vendor_dir'] parameter");
         }
                 
         if (!isset($app['config_dir'])) {
-            $app['config_dir'] = $app['root_dir'] . '/config';
+            $app['config_dir'] = $app['app_dir'] . '/config';
         }
         
         //load the config
@@ -45,15 +49,15 @@ class ApplicationExtension implements ExtensionInterface {
         if (isset($parameters['app']['extensions']['twig']) && $parameters['app']['extensions']['twig']) {
 
             if (!isset($app['twig.path'])) {
-                $app['twig.path'] = $app['root_dir'] . '/views';
+                $app['twig.path'] = $app['app_dir'] . '/Resources/views';
             }
             
             if (!isset($app['twig.class_path'])) {
-                $app['twig.class_path'] = $app['root_dir'] . '/vendor/twig/lib';
+                $app['twig.class_path'] = $app['vendor_dir'] . '/twig/lib';
             }
             
             if (!isset($app['twig.options']) && (!isset($app['debug']) || !$app['debug'])) {
-                $app['twig.options'] = array('cache' => $app['root_dir'] . '/cache/twig');
+                $app['twig.options'] = array('cache' => $app['app_dir'] . '/cache/twig');
             }
             
             $app->register(new \Silex\Extension\TwigExtension());
@@ -62,8 +66,8 @@ class ApplicationExtension implements ExtensionInterface {
         //register Monolog
         if (isset($parameters['app']['extensions']['monolog']) && $parameters['app']['extensions']['monolog']) {
             $app->register(new \Silex\Extension\MonologExtension(), array(
-                'monolog.logfile'       => $app['root_dir'].'/logs/app.log',
-                'monolog.class_path'    => $app['root_dir'].'/vendor/monolog/src',
+                'monolog.logfile'       => $app['app_dir'].'/logs/app.log',
+                'monolog.class_path'    => $app['vendor_dir'].'/monolog/src',
                 'monolog.name' => 'app'
             ));
         }

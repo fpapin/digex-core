@@ -23,3 +23,5 @@ Todo
 * Reimplement Restriction
 * Add DoctrineOrmExtension (https://github.com/docteurklein/Silex/blob/73d044f7aa9a1ecb057091b32211995b9742ab93/src/Silex/Extension/DoctrineOrmExtension.php)
 * Implement vendors install into digex OR build vendors into phar
+* Manage environments without environment system (use index.php and index_dev.php)
+* split log into environment logs
