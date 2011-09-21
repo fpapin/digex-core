@@ -24,13 +24,22 @@ class ConfigurationExtension implements ExtensionInterface
         $loader = new YamlConfigLoader();
         $parameters = $loader->load($app['config_dir']);
         
+        //
+        foreach($parameters as $groupName => $group) {
+            foreach($group as $name => $parameter) {
+                $app[$groupName . '.' . $name] = $parameter;
+            }
+        }
+
         //enable/disable the debug mode
         if (isset($parameters['app']['debug'])) {
             $app['debug'] = $parameters['app']['debug'];
         }
-
-        //inject config into the container
-        $app['config'] = $parameters;
+        
+        //set the charset
+        if (isset($parameters['app']['charset'])) {
+            $app['charset'] = $parameters['app']['charset'];
+        }
         
         return $app;
     }
