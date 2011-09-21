@@ -31,12 +31,12 @@ class ApplicationExtension implements ExtensionInterface
         $app->register(new ConfigurationExtension());
         
         //register UrlGeneratorExtension
-        if (isset( $app['config']['app']['extensions']['url_generator']) &&  $app['config']['app']['extensions']['url_generator']) {
+        if (isset( $app['app.extensions']['url_generator']) &&  $app['app.extensions']['url_generator']) {
             $app->register(new \Silex\Extension\UrlGeneratorExtension());
         }
 
         //register Twig
-        if (isset( $app['config']['app']['extensions']['twig']) &&  $app['config']['app']['extensions']['twig']) {
+        if (isset( $app['app.extensions']['twig']) &&  $app['app.extensions']['twig']) {
 
             if (!isset($app['twig.path'])) {
                 $app['twig.path'] = $app['app_dir'] . '/Resources/views';
@@ -54,11 +54,18 @@ class ApplicationExtension implements ExtensionInterface
         }
 
         //register Monolog
-        if (isset( $app['config']['app']['extensions']['monolog']) &&  $app['config']['app']['extensions']['monolog']) {
+        if (isset( $app['app.extensions']['monolog']) &&  $app['app.extensions']['monolog']) {
             $app->register(new \Silex\Extension\MonologExtension(), array(
                 'monolog.logfile'       => $app['app_dir'].'/logs/app.log',
                 'monolog.class_path'    => $app['vendor_dir'].'/monolog/src',
                 'monolog.name' => 'app'
+            ));
+        }
+        
+        //register Doctrine Orm
+        if (isset( $app['app.extensions']['doctrine_orm']) &&  $app['app.extensions']['doctrine_orm']) {
+            $app->register(new \Digex\Extension\DoctrineOrmExtension(), array(
+                'doctrine.orm.connection_options' => $app['app.extensions']['doctrine_orm']['connection_options']
             ));
         }
     }
