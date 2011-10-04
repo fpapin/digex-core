@@ -23,9 +23,8 @@ class YamlConfigLoaderTest extends \PHPUnit_Framework_TestCase
     
     function testLoadOverride()
     {
-        putenv('ENV=dev');
         $loader = new YamlConfigLoader();
-        $params = $loader->load(__DIR__ . '/../../fixtures/config');
+        $params = $loader->load(__DIR__ . '/../../fixtures/config', 'dev');
         
         $this->assertTrue($params['group1']['param1']);
         $this->assertTrue($params['group1']['param2']['param2-1']);
