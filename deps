@@ -2,14 +2,6 @@
     git=https://github.com/symfony/Yaml.git
     target=/Symfony/Component/Yaml
 
-[Finder]
-    git=https://github.com/symfony/Finder.git
-    target=/Symfony/Component/Finder
-
 [ClassLoader]
     git=https://github.com/symfony/ClassLoader.git
     target=/Symfony/Component/ClassLoader
-
-[HttpKernel]
-    git=https://github.com/symfony/HttpKernel.git
-    target=/Symfony/Component/HttpKernel

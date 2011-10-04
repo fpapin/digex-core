@@ -1,9 +1,9 @@
 <?php
 
-namespace Digex\Extension;
+namespace Digex\Provider;
 
 use Silex\Application;
-use Silex\ExtensionInterface;
+use Silex\ServiceProviderInterface;
 use Digex\YamlConfigLoader;
 
 /**
@@ -12,19 +12,21 @@ use Digex\YamlConfigLoader;
  * 
  * @author Damien Pitard <dpitard at digitas.fr>
  */
-class ConfigurationExtension implements ExtensionInterface
+class ConfigurationServiceProvider implements ServiceProviderInterface
 {
+    protected $configDir;
+    
+    public function __construct($configDir)
+    {
+        $this->configDir = $configDir;
+    }
+    
     public function register(Application $app)
     {
-        if (!isset($app['config_dir'])) {
-            throw new \Exception("Please set a \$app['config_dir'] parameter");
-        }
-        
         //load the config
         $loader = new YamlConfigLoader();
-        $parameters = $loader->load($app['config_dir']);
+        $parameters = $loader->load($this->configDir);
         
-        //
         foreach($parameters as $groupName => $group) {
             foreach($group as $name => $parameter) {
                 $app[$groupName . '.' . $name] = $parameter;
