@@ -14,6 +14,13 @@ Authors
 
 Damien Pitard <dpitard@digitas.fr>
 
+Changelog
+---------
+
+* update env system (it now a parameter)
+* updated to last Silex version
+* added session provider
+
 Todo
 ----
 

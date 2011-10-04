@@ -14,18 +14,19 @@ use Digex\YamlConfigLoader;
  */
 class ConfigurationServiceProvider implements ServiceProviderInterface
 {
-    protected $configDir;
-    
-    public function __construct($configDir)
-    {
-        $this->configDir = $configDir;
-    }
-    
     public function register(Application $app)
     {
+        if (!isset($app['config_dir'])) {
+            throw new \Exception('"config_dir" parameter is undefined');
+        }
+        
+        if (!isset($app['env'])) {
+            $app['env'] = null;
+        }
+        
         //load the config
         $loader = new YamlConfigLoader();
-        $parameters = $loader->load($this->configDir);
+        $parameters = $loader->load($app['config_dir'], $app['env']);
         
         foreach($parameters as $groupName => $group) {
             foreach($group as $name => $parameter) {
@@ -42,7 +43,5 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
         if (isset($parameters['app']['charset'])) {
             $app['charset'] = $parameters['app']['charset'];
         }
-        
-        return $app;
     }
 }

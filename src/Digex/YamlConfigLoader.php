@@ -19,7 +19,7 @@ class YamlConfigLoader
      * @param string $extension
      * @return array 
      */
-    public function load($dir, $basename = 'config', $extension = 'yml')
+    public function load($dir, $env, $basename = 'config', $extension = 'yml')
     {
         $filepath = $dir . '/' . $basename . '.' . $extension;
 
@@ -30,9 +30,8 @@ class YamlConfigLoader
         $parameters = Yaml::parse($filepath);
 
         //Override configuration for a specific environment
-        $env = getenv('ENV');
         $filepath = $dir . '/' . $basename . '_' . $env . '.' . $extension;
-        if (false !== $env & file_exists($filepath)) {
+        if ($env && file_exists($filepath)) {
             $envParameters = Yaml::parse($filepath);
             if ($envParameters) {
                 $parameters = $this->deepMerge($parameters, $envParameters);
