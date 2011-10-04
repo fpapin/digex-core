@@ -1,7 +1,0 @@
-[Yaml]
-    git=https://github.com/symfony/Yaml.git
-    target=/Symfony/Component/Yaml
-
-[ClassLoader]
-    git=https://github.com/symfony/ClassLoader.git
-    target=/Symfony/Component/ClassLoader
