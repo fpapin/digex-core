@@ -11,6 +11,7 @@ use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\MonologServiceProvider;
+use Silex\Provider\DoctrineServiceProvider;
 
 /**
  * @author Damien Pitard <dpitard at digitas dot fr>
@@ -73,6 +74,26 @@ abstract class StandardControllerProvider implements ControllerProviderInterface
                 'monolog.logfile'       => $app['app_dir'].'/logs/app.log',
                 'monolog.class_path'    => $app['vendor_dir'].'/monolog/src',
                 'monolog.name' => 'app'
+            ));
+        }
+        
+        //register Doctrine DBAL
+        if ($this->isEnabled($app, 'doctrine-dbal')) {
+
+            if (!isset($app['twig.driver'])) {
+                $app['db.driver'] = 'pdo_mysql';
+            }
+            
+            $app->register(new DoctrineServiceProvider(), array(
+                'db.options'    => array(
+                    'driver'    => $app['db.driver'],
+                    'dbname'    => isset($app['db.dbname'])?$app['db.dbname']:null,
+                    'host'      => $app['db.host']?$app['db.host']:null,
+                    'user'      => $app['db.user']?$app['db.user']:null,
+                    'password'  => $app['db.password']?$app['db.password']:null,
+                ),
+                'db.dbal.class_path'    => $app['vendor_dir'].'/doctrine-dbal/lib',
+                'db.common.class_path'  => $app['vendor_dir'].'/doctrine-common/lib'
             ));
         }
     }
