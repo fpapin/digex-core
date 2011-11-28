@@ -11,6 +11,7 @@ use Digex\YamlConfigLoader;
  * Digitas application, init some parameters and load config files.
  * 
  * @author Damien Pitard <dpitard at digitas.fr>
+ * @copyright Digitas France
  */
 class ConfigurationServiceProvider implements ServiceProviderInterface
 {

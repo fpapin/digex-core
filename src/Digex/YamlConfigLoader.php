@@ -5,9 +5,8 @@ namespace Digex;
 use Symfony\Component\Yaml\Yaml;
 
 /**
- * YamlConfigLoader
- *
  * @author Damien Pitard <dpitard at digitas.fr>
+ * @copyright Digitas France
  */
 class YamlConfigLoader
 {
