@@ -50,54 +50,100 @@ EOF
             mkdir($vendorDir, 0777, true);
         }
         
-        $deps = Yaml::parse(__DIR__.'/../../../../config/deps.yml');
+        $filepath = __DIR__.'/../../../../config/deps.yml';
+        $deps = Yaml::parse($filepath);
         
+        if (isset($app['config_dir'])) {
+            $filepath = $app['config_dir'] . '/' . 'deps.yml';
+            if (file_exists($filepath)) {
+                $appDeps = Yaml::parse($filepath);
+                $deps = $this->deepMerge($deps, $appDeps);
+            }
+        }
+
         if (!isset($deps['deps'])) {
             throw new \Exception('Invalid configuration format');
         }
-        
-        foreach($deps['deps'] as $name => $libs) {
+        foreach($deps['deps'] as $name => $dep) {
+            
+            $install = false;
+            
+            //si aucun provider n'est précisé
+            if (!isset($dep['providers']) || count($dep['providers']) == 0) {
+                $install = true;
+            } else {
+                foreach($dep['providers'] as $provider) {
 
-            if (LazyRegisterServiceProvider::isEnabled($app, $name)) {
-                
-                foreach($libs as $target => $dep) {
-
-                    // revision
-                    if (isset($dep['version'])) {
-                        $rev = $dep['version'];
-                    } else {
-                        $rev = 'origin/HEAD';
+                    if (LazyRegisterServiceProvider::isEnabled($app, $name)) {
+                        $install = true;
+                        break;
                     }
+                }
+            }
 
-                    // install dir
-                    $installDir = $vendorDir.'/'.$target;
+            if ($install) {
+                // revision
+                if (isset($dep['version'])) {
+                    $rev = $dep['version'];
+                } else {
+                    $rev = 'origin/HEAD';
+                }
 
-                    //@todo is enabled ?
+                // install dir
+                $installDir = $vendorDir.'/'.$name;
 
-                    $output->writeln(sprintf("Installing <info>%s</info>", $name));
+                //@todo is enabled ?
 
-                    if (!isset($dep['url'])) {
-                        throw new \Exception(sprintf('The "url" value for the "%s" dependency must be set.', $name));
-                    }
-                    $url = $dep['url'];
+                $output->writeln(sprintf("Installing <info>%s</info>", $name));
 
-                    if (isset($dep['scm'])) {
-                        $scm = $dep['scm'];
-                    } else {
-                        $scm = 'git';
-                    }
+                if (!isset($dep['url'])) {
+                    throw new \Exception(sprintf('The "url" value for the "%s" dependency must be set.', $name));
+                }
+                $url = $dep['url'];
 
-                    switch ($scm) {
-                        case 'git':
-                            $this->doGitInstall($url, $rev, $installDir);
-                            break;
-                        default:
-                            throw new \Exception(sprintf('Unsupported scm type %scm', $scm));
-                    }
+                if (isset($dep['scm'])) {
+                    $scm = $dep['scm'];
+                } else {
+                    $scm = 'git';
+                }
 
+                switch ($scm) {
+                    case 'git':
+                        $this->doGitInstall($url, $rev, $installDir);
+                        break;
+                    default:
+                        throw new \Exception(sprintf('Unsupported scm type "%s"', $scm));
                 }
             }
         }
+    }
+    
+    /**
+     * Do a deep merge of two arrays
+     * 
+     * @param array $leftSide
+     * @param array $rightSide
+     * @return array 
+     */
+    protected function deepMerge($leftSide, $rightSide)
+    {
+        if (!is_array($rightSide)) {
+            
+            return $rightSide;
+        }
+        
+        foreach ($rightSide as $k => $v) {
+            // no conflict
+            if (!array_key_exists($k, $leftSide)) {
+
+                $leftSide[$k] = $v;
+                continue;
+            }
+            
+            $leftSide[$k] = $this->deepMerge($leftSide[$k], $v);
+        }
+        
+        return $leftSide;
     }
     
     protected function doGitInstall($url, $rev, $installDir)
