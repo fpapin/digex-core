@@ -6,6 +6,7 @@ use Symfony\Component\Console\Application as ConsoleApplication;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Command\Command;
 use Silex\Application as SilexApplication;
+use Digex\Console\Command\AppAwareCommandInterface;
 
 /**
  * @author Damien Pitard <dpitard at digitas dot fr>
@@ -45,7 +46,7 @@ class Console extends ConsoleApplication
      */
     public function add(Command $command)
     {
-        if ($command instanceof Digex\Console\Command\AppAwareCommandInterface) {
+        if ($command instanceof AppAwareCommandInterface) {
             $command->setApp($this->app);
         }
         parent::add($command);

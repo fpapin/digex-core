@@ -2,15 +2,16 @@
 
 namespace Digex\Console\Command;
 
-use Digex\Digex;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Command\Command;
+use Digex\Application;
 
 /**
  * @author Damien Pitard <dpitard at digitas.fr>
  * @copyright Digitas France
  */
-class DigexVersionCommand extends Command
+class VersionCommand extends Command
 {
     /**
      * @see Command
@@ -21,8 +22,7 @@ class DigexVersionCommand extends Command
             ->setName('digex:version')
             ->setDescription('Get the Digex version')
             ->setHelp(<<<EOF
-The <info>digex:version</info> command install the sandbox
-    - 3rd party libraries download
+The <info>digex:version</info> command returns the Digex version
 
 <info>php app/console digex:version</info>
 EOF
@@ -35,6 +35,6 @@ EOF
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(Digex::getVersion());
+        $output->writeln(sprintf("Digex version %s", Application::VERSION));
     }
 }

@@ -6,6 +6,7 @@ use Symfony\Component\Yaml\Yaml;
 
 /**
  * @author Damien Pitard <dpitard at digitas.fr>
+ * @author Fabien Potencier <fabien@symfony.com>
  * @copyright Digitas France
  */
 class YamlConfigLoader

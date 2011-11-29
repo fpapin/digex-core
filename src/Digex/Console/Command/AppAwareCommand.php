@@ -9,7 +9,7 @@ use Silex\Application;
  * @author Damien Pitard <dpitard at digitas dot fr>
  * @copyright Digitas France
  */
-class Command extends BaseCommand implements AppAwareCommandInterface
+abstract class AppAwareCommand extends BaseCommand implements AppAwareCommandInterface
 {
     protected $app;
 

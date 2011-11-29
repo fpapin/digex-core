@@ -5,7 +5,8 @@ namespace Digex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 use Digex\Console\Console;
-use Digex\Console\Command\DigexVersionCommand;
+use Digex\Console\Command\VersionCommand;
+use Digex\Console\Command\VendorCommand;
 
 /**
  * @author Damien Pitard <dpitard at digitas.fr>
@@ -19,6 +20,7 @@ class ConsoleServiceProvider implements ServiceProviderInterface
             return new Console($app);
         });
         
-        $app['console']->add(new DigexVersionCommand());
+        $app['console']->add(new VersionCommand());
+        $app['console']->add(new VendorCommand());
     }
 }

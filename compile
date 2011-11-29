@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+
+/**
+ * @author Damien Pitard <dpitard at digitas dot fr>
+ * @copyright Digitas France
+ */
+
+require_once __DIR__.'/autoload.php';
+
+use Digex\Compiler;
+
+$compiler = new Compiler();
+$compiler->compile();

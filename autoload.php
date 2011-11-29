@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @author Damien Pitard <dpitard at digitas dot fr>
+ * @copyright Digitas France
+ */
+
 if (false === class_exists('Symfony\Component\ClassLoader\UniversalClassLoader', false)) {
     require_once __DIR__.'/vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php';
 }
