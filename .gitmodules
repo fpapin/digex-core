@@ -6,4 +6,4 @@
 	url = https://github.com/symfony/ClassLoader.git
 [submodule "vendor/Symfony/Component/Console"]
 	path = vendor/Symfony/Component/Console
-	url = git://github.com/symfony/Console.git
+	url = https://github.com/symfony/Console.git
