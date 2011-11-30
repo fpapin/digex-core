@@ -74,7 +74,7 @@ EOF
             } else {
                 foreach($dep['providers'] as $provider) {
 
-                    if (LazyRegisterServiceProvider::isEnabled($app, $name)) {
+                    if (LazyRegisterServiceProvider::isEnabled($app, $provider)) {
                         $install = true;
                         break;
                     }

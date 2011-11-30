@@ -9,7 +9,7 @@ deps:
     providers: [monolog]
   doctrine-common:
     url: https://github.com/doctrine/common
-    providers: [doctrine-dbal doctrine-orm]
+    providers: [doctrine-dbal]
   doctrine-dbal:
     url: https://github.com/doctrine/dbal
     providers: [doctrine-dbal]
