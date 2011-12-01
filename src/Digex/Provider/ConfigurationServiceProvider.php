@@ -18,7 +18,7 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         if (!isset($app['config_dir'])) {
-            throw new \Exception('"config_dir" parameter is undefined');
+            throw new \Exception('Undefined "config_dir" parameter');
         }
         
         if (!isset($app['env'])) {
@@ -33,16 +33,6 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
             foreach($group as $name => $parameter) {
                 $app[$groupName . '.' . $name] = $parameter;
             }
-        }
-
-        //enable/disable the debug mode
-        if (isset($parameters['app']['debug'])) {
-            $app['debug'] = $parameters['app']['debug'];
-        }
-        
-        //set the charset
-        if (isset($parameters['app']['charset'])) {
-            $app['charset'] = $parameters['app']['charset'];
         }
     }
 }

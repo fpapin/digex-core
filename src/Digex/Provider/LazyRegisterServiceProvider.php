@@ -5,12 +5,13 @@ namespace Digex\Provider;
 use Silex\Application;
 use Silex\ControllerCollection;
 use Silex\ServiceProviderInterface;
-use Digex\Provider\ConfigurationServiceProvider;
 use Silex\Provider\SessionServiceProvider;
 use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
+use Digex\Provider\ConfigurationServiceProvider;
+use Digex\Console\Command\VendorInitCommand;
 
 /**
  * @author Damien Pitard <dpitard at digitas dot fr>
@@ -33,11 +34,11 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         if (!isset($app['app_dir'])) {
-            throw new \Exception('Undefined $app["app_dir"] parameter');
+            throw new \Exception('Undefined "app_dir" parameter');
         }
         
         if (!isset($app['vendor_dir'])) {
-            throw new \Exception('Undefined $app["vendor_dir"] parameter');
+            throw new \Exception('Undefined "vendor_dir" parameter');
         }
         
         if (!isset($app['config_dir'])) {
@@ -84,9 +85,9 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         }
         
         //register Doctrine DBAL
-        if (self::isEnabled($app, 'doctrine-dbal')) {
+        if (self::isEnabled($app, 'doctrine-dbal') || self::isEnabled($app, 'doctrine-orm')) {
 
-            if (!isset($app['twig.driver'])) {
+            if (!isset($app['db.driver'])) {
                 $app['db.driver'] = 'pdo_mysql';
             }
             
@@ -101,6 +102,25 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 'db.dbal.class_path'    => $app['vendor_dir'].'/doctrine-dbal/lib',
                 'db.common.class_path'  => $app['vendor_dir'].'/doctrine-common/lib'
             ));
+        }
+        
+        //register Doctrine DBAL
+        if (self::isEnabled($app, 'doctrine-orm')) {
+            
+            if (!isset($app['db.entities'])) {
+                $app['db.entities'] = array();
+            }
+            
+            $app->register(new DoctrineORMServiceProvider(), array(
+                'db.proxy_dir' => $app['app_dir'] . '/cache/proxies',
+                'db.proxy_namespace' => 'DoctrineORMProxy',
+                'db.orm.class_path'  => $app['vendor_dir'].'/doctrine-orm/lib',
+                'db.entities' => $app['db.entities']
+            ));
+        }
+        
+        if (isset($app['console'])) {
+            $app['console']->add(new VendorInitCommand());
         }
     }
 }

@@ -13,7 +13,7 @@ use Digex\Provider\LazyRegisterServiceProvider;
  * @author Damien Pitard <dpitard at digitas.fr>
  * @copyright Digitas France
  */
-class VendorCommand extends AppAwareCommand
+class VendorInitCommand extends AppAwareCommand
 {
     /**
      * @see Command
@@ -21,14 +21,14 @@ class VendorCommand extends AppAwareCommand
     protected function configure()
     {
         $this
-            ->setName('digex:vendor')
+            ->setName('digex:vendor:init')
             ->setDescription('Install the required vendors')
             ->setHelp(<<<EOF
-The <info>vendor</info> command downloads the required 3rd party librairies.
+The <info>digex:vendor:init</info> command downloads the required 3rd party librairies.
     
 The git binary is required.
 
-<info>php app/console digex:vendor</info>
+<info>php app/console digex:vendor:init</info>
 EOF
             )
         ;
