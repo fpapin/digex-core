@@ -42,7 +42,7 @@ class Compiler
             ->name('*.php')
             ->notName('Compiler.php')
             ->in(__DIR__.'/..')
-//            ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
+            ->in(__DIR__.'/../../vendor/Symfony/Component/ClassLoader')
 //            ->in(__DIR__.'/../../vendor/Symfony/Component/Process')
             //->in(__DIR__.'/../../vendor/Symfony/Component/Finder')
             ->in(__DIR__.'/../../vendor/Symfony/Component/Console')
@@ -85,24 +85,7 @@ class Compiler
         return <<<'EOF'
 <?php
 
-use Digex\Digex;
-
 Phar::mapPhar('digex.phar');
-
-require_once 'phar://digex.phar/autoload.php';
-
-if ('cli' === php_sapi_name() && basename(__FILE__) === basename($_SERVER['argv'][0]) && isset($_SERVER['argv'][1])) {
-    switch ($_SERVER['argv'][1]) {
-        case 'version':
-            printf("Digex version %s\n", Application::VERSION);
-            break;
-
-        default:
-            printf("Unknown command '%s' (available commands: version).\n", $_SERVER['argv'][1]);
-    }
-
-    exit(0);
-}
 
 __HALT_COMPILER();
 EOF;
