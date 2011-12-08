@@ -57,7 +57,9 @@ EOF
             $filepath = $app['config_dir'] . '/' . 'deps.yml';
             if (file_exists($filepath)) {
                 $appDeps = Yaml::parse($filepath);
-                $deps = $this->deepMerge($deps, $appDeps);
+                if (null !== $appDeps && isset($appDeps['deps']) && null !== $appDeps['deps']) {
+                    $deps = $this->deepMerge($deps, $appDeps);
+                }
             }
         }
 

@@ -73,7 +73,7 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             $app['autoloader']->registerNamespace('Doctrine\\ORM', $app['db.orm.class_path']);
         }
         
-        if (isset($app['console'])) {
+        if (isset($app['console']) && class_exists('Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand')) {
             $app['console']->add(new SchemaCreateCommand());
             $app['console']->add(new UpdateSchemaCommand());
         }
