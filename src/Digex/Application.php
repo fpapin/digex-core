@@ -13,9 +13,9 @@ abstract class Application
 {
     protected $app;
     
-    public function __construct($env = null, $debug = true)
+    public function __construct(SilexApplication $app, $env = null, $debug = true)
     {
-        $this->app = new SilexApplication();
+        $this->app = $app;
         
         $this->app['debug'] = $debug;
         $this->app['env'] = $env;
