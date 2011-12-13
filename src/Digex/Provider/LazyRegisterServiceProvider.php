@@ -118,9 +118,5 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 'db.entities' => $app['db.entities']
             ));
         }
-        
-        if (isset($app['console'])) {
-            $app['console']->add(new VendorInitCommand());
-        }
     }
 }
