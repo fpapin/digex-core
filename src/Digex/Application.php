@@ -3,44 +3,30 @@
 namespace Digex;
 
 use Silex\Application as SilexApplication;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @author Damien Pitard <dpitard at digitas.fr>
  * @copyright Digitas France
  */
-abstract class Application extends SilexApplication
+abstract class Application
 {
-    const VERSION = '@package_version@';
+    protected $app;
     
-    abstract public function configure();
-
-    abstract public function getControllers();
-    
-    abstract public function getServices();
-
-    public function __construct()
+    public function __construct($env = null, $debug = true)
     {
-        parent::__construct();
+        $this->app = new SilexApplication();
         
-        $app = $this;
+        $this->app['debug'] = $debug;
+        $this->app['env'] = $env;
         
-        $this->configure();
-        
-        $this->registerControllerProviders();
-        $this->registerServiceProviders();
+         $this->configure($this->app);
     }
     
-    protected function registerControllerProviders()
+    public function run()
     {
-        foreach($this->getControllers() as $route => $controller) {
-            $this->mount($route, $controller);
-        }
+        $this->app->run();
     }
     
-    protected function registerServiceProviders()
-    {
-        foreach($this->getServices() as $controller) {
-            $this->register($controller);
-        }
-    }
+    abstract public function configure(SilexApplication $app);
 }
