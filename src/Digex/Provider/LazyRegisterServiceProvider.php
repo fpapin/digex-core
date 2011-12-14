@@ -85,7 +85,7 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         }
         
         //register Doctrine DBAL
-        if (self::isEnabled($app, 'doctrine-dbal') || self::isEnabled($app, 'doctrine-orm')) {
+        if (self::isEnabled($app, 'doctrine')) {
 
             if (!isset($app['db.driver'])) {
                 $app['db.driver'] = 'pdo_mysql';
@@ -102,10 +102,6 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 'db.dbal.class_path'    => $app['vendor_dir'].'/doctrine-dbal/lib',
                 'db.common.class_path'  => $app['vendor_dir'].'/doctrine-common/lib'
             ));
-        }
-        
-        //register Doctrine DBAL
-        if (self::isEnabled($app, 'doctrine-orm')) {
             
             if (!isset($app['db.entities'])) {
                 $app['db.entities'] = array();

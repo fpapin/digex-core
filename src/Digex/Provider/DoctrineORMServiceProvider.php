@@ -16,7 +16,7 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Digex\Console\Command\SchemaCreateCommand;
 use Digex\Console\Command\UpdateSchemaCommand;
-
+        use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
 /**
  * @see https://github.com/flintstones/DoctrineOrm
  * 
@@ -72,7 +72,7 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
         if (isset($app['db.orm.class_path'])) {
             $app['autoloader']->registerNamespace('Doctrine\\ORM', $app['db.orm.class_path']);
         }
-        
+
         if (isset($app['console']) && class_exists('Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand')) {
             $app['console']->add(new SchemaCreateCommand());
             $app['console']->add(new UpdateSchemaCommand());
