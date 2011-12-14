@@ -43,3 +43,6 @@ build/config/buildinfo.properties
 # packagist
 composer.phar
 composer.lock
+
+# digex
+vendor/*
