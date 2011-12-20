@@ -1,6 +1,8 @@
 Digex-Core
 ==========
 
+[![Build Status](https://secure.travis-ci.org/digitas/digex-core.png)](http://travis-ci.org/digitas/digex-core)
+
 Core library for [Digex](https://github.com/digitas/digex)
 
 For further information, [read the Digex wiki](https://github.com/digitas/digex/wiki).
