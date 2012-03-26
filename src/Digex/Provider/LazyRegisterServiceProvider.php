@@ -10,6 +10,8 @@ use Silex\Provider\UrlGeneratorServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
+use Silex\Provider\TranslationServiceProvider;
+use Silex\Provider\SymfonyBridgesServiceProvider;
 use Digex\Provider\ConfigurationServiceProvider;
 use Digex\Console\Command\VendorInitCommand;
 
@@ -64,10 +66,6 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 $app['twig.path'] = $app['app_dir'] . '/Resources/views';
             }
             
-            if (!isset($app['twig.class_path'])) {
-                $app['twig.class_path'] = $app['vendor_dir'] . '/twig/lib';
-            }
-            
             if (!isset($app['twig.options']) && (!isset($app['debug']) || !$app['debug'])) {
                 $app['twig.options'] = array('cache' => $app['app_dir'] . '/cache/twig');
             }
@@ -79,7 +77,6 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         if (self::isEnabled($app, 'monolog')) {
             $app->register(new MonologServiceProvider(), array(
                 'monolog.logfile'       => $app['app_dir'].'/logs/app.log',
-                'monolog.class_path'    => $app['vendor_dir'].'/monolog/src',
                 'monolog.name' => 'app'
             ));
         }
@@ -98,9 +95,7 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                     'host'      => $app['db.host']?$app['db.host']:null,
                     'user'      => $app['db.user']?$app['db.user']:null,
                     'password'  => $app['db.password']?$app['db.password']:null,
-                ),
-                'db.dbal.class_path'    => $app['vendor_dir'].'/doctrine-dbal/lib',
-                'db.common.class_path'  => $app['vendor_dir'].'/doctrine-common/lib'
+                )
             ));
             
             if (!isset($app['db.entities'])) {
@@ -110,9 +105,34 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
             $app->register(new DoctrineORMServiceProvider(), array(
                 'db.proxy_dir' => $app['app_dir'] . '/cache/proxies',
                 'db.proxy_namespace' => 'DoctrineORMProxy',
-                'db.orm.class_path'  => $app['vendor_dir'].'/doctrine-orm/lib',
                 'db.entities' => $app['db.entities']
             ));
+        }
+
+        //register TranslationServiceProvider
+        if (self::isEnabled($app, 'translation')) {
+
+            $app['locale_fallback'] = $app['translation.locale_fallback'];
+            $app->register(new TranslationServiceProvider());
+
+            $app['translator.loader'] = new \Symfony\Component\Translation\Loader\YamlFileLoader();
+
+            $messages = array();
+            foreach($app['translation.locales'] as $locale => $filename) {
+                $messages[$locale] = $app['app_dir'] . '/locales/' . $filename;
+            }
+
+            $app['translator.messages'] = $messages;
+
+            $app->before(function () use ($app) {
+                if ($locale = $app['request']->get('locale')) {
+                    $app['locale'] = $locale;
+                }
+            });
+        }
+
+        if (self::isEnabled($app, 'symfony_bridges')) {
+            $app->register(new SymfonyBridgesServiceProvider());
         }
     }
 }
