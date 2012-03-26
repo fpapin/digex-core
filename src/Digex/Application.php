@@ -18,6 +18,11 @@ abstract class Application
         $this->app = $app;
         
         $this->app['debug'] = $debug;
+        if ($debug) {
+            ini_set('display_errors', 1); 
+            error_reporting(E_ALL);
+        }
+
         $this->app['env'] = $env;
         
          $this->configure($this->app);
