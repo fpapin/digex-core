@@ -13,7 +13,7 @@
         "symfony/console": "dev-master",
         "symfony/translation": "dev-master",
         "symfony/twig-bridge" : "dev-master",
-        "symfony/config": "dev-master",
+        "symfony/config": "2.0.*",
         "doctrine/orm": "2.1.4",
         "doctrine/dbal" : "2.1.6",
         "twig/twig": "1.4.0"
