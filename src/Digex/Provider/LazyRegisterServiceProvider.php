@@ -23,37 +23,51 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
 {
     /**
      * Is the provider set in configuration
-     * 
+     *
      * @param Application $app
      * @param string $name
-     * @return boolean 
+     * @return boolean
      */
     static public function isEnabled(Application $app, $name)
     {
         return (isset($app['app.providers'][$name]) &&  $app['app.providers'][$name]);
     }
-    
+
     public function register(Application $app)
     {
         if (!isset($app['app_dir'])) {
             throw new \Exception('Undefined "app_dir" parameter');
         }
-        
+
         if (!isset($app['vendor_dir'])) {
             throw new \Exception('Undefined "vendor_dir" parameter');
         }
-        
+
         if (!isset($app['config_dir'])) {
             $app['config_dir'] = $app['app_dir'] . '/config';
         }
-        
+
         //register Configuration extension
         $app->register(new ConfigurationServiceProvider());
-        
+
         if (self::isEnabled($app, 'session')) {
+
+            if (isset($app['session.cookie_lifetime'])) {
+
+                $options = array(
+                    'cookie_lifetime' => $app['session.cookie_lifetime']
+                );
+
+                if (isset($app['session.storage.options'])) {
+                    $app['session.storage.options'] = array_merge($app['session.storage.options'], $options);
+                } else {
+                    $app['session.storage.options'] = $options;
+                }
+            }
+
             $app->register(new SessionServiceProvider());
         }
-        
+
         //register UrlGenerator extension
         if (self::isEnabled($app, 'url_generator')) {
             $app->register(new UrlGeneratorServiceProvider());
@@ -65,11 +79,11 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
             if (!isset($app['twig.path'])) {
                 $app['twig.path'] = $app['app_dir'] . '/Resources/views';
             }
-            
+
             if (!isset($app['twig.options']) && (!isset($app['debug']) || !$app['debug'])) {
                 $app['twig.options'] = array('cache' => $app['app_dir'] . '/cache/twig');
             }
-            
+
             $app->register(new TwigServiceProvider());
         }
 
@@ -80,14 +94,14 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 'monolog.name' => 'app'
             ));
         }
-        
+
         //register Doctrine DBAL
         if (self::isEnabled($app, 'doctrine')) {
 
             if (!isset($app['db.driver'])) {
                 $app['db.driver'] = 'pdo_mysql';
             }
-            
+
             $app->register(new DoctrineServiceProvider(), array(
                 'db.options'    => array(
                     'driver'    => $app['db.driver'],
@@ -97,11 +111,11 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                     'password'  => $app['db.password']?$app['db.password']:null,
                 )
             ));
-            
+
             if (!isset($app['db.entities'])) {
                 $app['db.entities'] = array();
             }
-            
+
             $app->register(new DoctrineORMServiceProvider(), array(
                 'db.proxy_dir' => $app['app_dir'] . '/cache/proxies',
                 'db.proxy_namespace' => 'DoctrineORMProxy',
