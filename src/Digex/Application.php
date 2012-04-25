@@ -11,27 +11,28 @@ use Symfony\Component\HttpFoundation\Request;
  */
 abstract class Application
 {
+    const VERSION = '@package_version@';
     protected $app;
-    
+
     public function __construct(SilexApplication $app, $env = null, $debug = true)
     {
         $this->app = $app;
-        
+
         $this->app['debug'] = $debug;
         if ($debug) {
-            ini_set('display_errors', 1); 
+            ini_set('display_errors', 1);
             error_reporting(E_ALL);
         }
 
         $this->app['env'] = $env;
-        
+
          $this->configure($this->app);
     }
-    
+
     public function run()
     {
         $this->app->run();
     }
-    
+
     abstract public function configure(SilexApplication $app);
 }

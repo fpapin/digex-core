@@ -9,17 +9,17 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "symfony/yaml": "dev-master",
-        "symfony/console": "dev-master",
-        "symfony/translation": "dev-master",
-        "symfony/twig-bridge" : "dev-master",
-        "symfony/config": "dev-master",
-        "doctrine/orm": "2.1.4",
-        "doctrine/dbal" : "2.1.6",
-        "twig/twig": "1.4.0"
-    },
-    "recommend": {
-        "monolog/monolog": "1.0.2"
+        "symfony/yaml": "2.1.*",
+        "symfony/console": "2.1.*",
+        "symfony/translation": "2.1.*",
+        "symfony/twig-bridge" : "2.1.*",
+        "symfony/config": "2.1.*",
+        "doctrine/orm": "2.1.*",
+        "doctrine/dbal" : "2.1.*",
+        "twig/twig": "1.4.*",
+        "monolog/monolog": "1.0.*",
+        "symfony/process": "2.1.*",
+        "symfony/finder": "2.1.*"
     },
     "autoload": {
         "psr-0": { "Digex": "src/" }
