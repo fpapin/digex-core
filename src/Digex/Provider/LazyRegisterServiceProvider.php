@@ -77,15 +77,11 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         //register Twig
         if (self::isEnabled($app, 'twig')) {
 
-            if (!isset($app['twig.path'])) {
-                $app['twig.path'] = $app['app_dir'] . '/Resources/views';
-            }
-
-            if (!isset($app['twig.options']) && (!isset($app['debug']) || !$app['debug'])) {
-                $app['twig.options'] = array('cache' => $app['app_dir'] . '/cache/twig');
-            }
-
-            $app->register(new TwigServiceProvider());
+            $app->register(new TwigServiceProvider(), array(
+                'twig.path'=> $app['app_dir'] . '/Resources/views',
+                'twig.options' => array('cache' => $app['app_dir'] . '/cache/twig')
+                )
+            );
         }
 
         //register Monolog
@@ -134,7 +130,7 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
 			$app['translator.loader'] = $app->share(function () {
 				return new YamlFileLoader();
 			});
-			
+
 			//$app['translator.domains'] = array();
 			$domains = array();
             foreach($app['translation.locales'] as $locale => $filename) {
@@ -149,7 +145,7 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
             });
         }
     }
-	
+
 	public function boot(Application $app)
 	{
 	}
