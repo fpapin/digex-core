@@ -78,4 +78,8 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             $app['console']->add(new UpdateSchemaCommand());
         }
     }
+	
+	public function boot(Application $app)
+	{
+	}
 }
