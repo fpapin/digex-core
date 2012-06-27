@@ -19,4 +19,8 @@ class ConsoleServiceProvider implements ServiceProviderInterface
             return new Console($app);
         });
     }
+	
+	public function boot(Application $app)
+	{
+	}
 }

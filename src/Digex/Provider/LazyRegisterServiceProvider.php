@@ -12,6 +12,7 @@ use Silex\Provider\MonologServiceProvider;
 use Silex\Provider\DoctrineServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\SymfonyBridgesServiceProvider;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Digex\Provider\ConfigurationServiceProvider;
 use Digex\Console\Command\VendorInitCommand;
 
@@ -126,17 +127,20 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         //register TranslationServiceProvider
         if (self::isEnabled($app, 'translation')) {
 
-            $app['locale_fallback'] = $app['translation.locale_fallback'];
-            $app->register(new TranslationServiceProvider());
+            $app->register(new TranslationServiceProvider(), array(
+				'locale_fallback' => $app['translation.locale_fallback']
+			));
 
-            $app['translator.loader'] = new \Symfony\Component\Translation\Loader\YamlFileLoader();
-
-            $messages = array();
+			$app['translator.loader'] = $app->share(function () {
+				return new YamlFileLoader();
+			});
+			
+			//$app['translator.domains'] = array();
+			$domains = array();
             foreach($app['translation.locales'] as $locale => $filename) {
-                $messages[$locale] = $app['app_dir'] . '/locales/' . $filename;
+                $domains['messages'][$locale] = $app['app_dir'] . '/locales/' . $filename;
             }
-
-            $app['translator.messages'] = $messages;
+			$app['translator.domains'] = $domains;
 
             $app->before(function () use ($app) {
                 if ($locale = $app['request']->get('locale')) {
@@ -144,9 +148,9 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
                 }
             });
         }
-
-        if (self::isEnabled($app, 'symfony_bridges')) {
-            $app->register(new SymfonyBridgesServiceProvider());
-        }
     }
+	
+	public function boot(Application $app)
+	{
+	}
 }

@@ -35,4 +35,8 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
             }
         }
     }
+	
+	public function boot(Application $app)
+	{
+	}
 }
