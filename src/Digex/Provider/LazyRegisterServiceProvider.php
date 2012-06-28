@@ -77,9 +77,15 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         //register Twig
         if (self::isEnabled($app, 'twig')) {
 
+            if ($app['debug']) {
+                $options = array();
+            } else {
+                $options = array('cache' => $app['app_dir'] . '/cache/twig');
+            }
+
             $app->register(new TwigServiceProvider(), array(
                 'twig.path'=> $app['app_dir'] . '/Resources/views',
-                'twig.options' => array('cache' => $app['app_dir'] . '/cache/twig')
+                'twig.options' => $options
                 )
             );
         }
