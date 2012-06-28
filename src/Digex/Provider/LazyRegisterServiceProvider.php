@@ -130,19 +130,18 @@ class LazyRegisterServiceProvider implements ServiceProviderInterface
         if (self::isEnabled($app, 'translation')) {
 
             $app->register(new TranslationServiceProvider(), array(
-				'locale_fallback' => $app['translation.locale_fallback']
-			));
+                'locale_fallback' => $app['translation.locale_fallback']
+            ));
 
-			$app['translator.loader'] = $app->share(function () {
-				return new YamlFileLoader();
-			});
+            $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
+                $translator->addLoader('yaml', new YamlFileLoader());
 
-			//$app['translator.domains'] = array();
-			$domains = array();
-            foreach($app['translation.locales'] as $locale => $filename) {
-                $domains['messages'][$locale] = $app['app_dir'] . '/locales/' . $filename;
-            }
-			$app['translator.domains'] = $domains;
+                foreach($app['translation.locales'] as $locale => $filename) {
+                    $translator->addResource('yaml', $app['app_dir'] . '/locales/' . $filename, $locale);
+                }
+
+                return $translator;
+            }));
 
             $app->before(function () use ($app) {
                 if ($locale = $app['request']->get('locale')) {
