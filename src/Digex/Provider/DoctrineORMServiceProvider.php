@@ -14,9 +14,8 @@ use Doctrine\ORM\Mapping\Driver\XmlDriver;
 use Doctrine\ORM\Mapping\Driver\YamlDriver;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
-use Digex\Console\Command\SchemaCreateCommand;
-use Digex\Console\Command\UpdateSchemaCommand;
-        use Doctrine\ORM\Tools\Console\Command\SchemaTool\CreateCommand;
+use Digex\Console\Command;
+
 /**
  * @see https://github.com/flintstones/DoctrineOrm
  * 
