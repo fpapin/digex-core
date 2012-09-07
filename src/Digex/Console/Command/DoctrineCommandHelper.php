@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Pitpit\Silex\Console\Command;
+namespace Digex\Console\Command;
 
 use Symfony\Component\Console\Application;
 use Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper;
