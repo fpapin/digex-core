@@ -89,6 +89,7 @@ abstract class WebTestCase extends BaseWebTestCase
 
             $file = current($results);
 
+            $env = 'test';
             static::$cache['app'] = require_once $file;
         }
 
