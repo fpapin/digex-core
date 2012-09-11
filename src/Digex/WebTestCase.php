@@ -7,6 +7,8 @@ use Symfony\Component\Finder\Finder;
 
 abstract class WebTestCase extends BaseWebTestCase
 {
+    protected static $cache;
+
     /**
      * Finds the directory where the phpunit.xml(.dist) is stored.
      *
@@ -75,20 +77,22 @@ abstract class WebTestCase extends BaseWebTestCase
      */
     protected static function getApplication()
     {
-        $dir = isset($_SERVER['APP_DIR']) ? $_SERVER['APP_DIR'] : static::getPhpUnitXmlDir();
+        if (!isset(static::$cache['app'])) {
+            $dir = isset($_SERVER['APP_DIR']) ? $_SERVER['APP_DIR'] : static::getPhpUnitXmlDir();
 
-        $finder = new Finder();
-        $finder->name('app.php')->depth(0)->in($dir);
-        $results = iterator_to_array($finder);
-        if (!count($results)) {
-            throw new \RuntimeException('Either set APP_DIR in your phpunit.xml or override the WebTestCase::createApplication() method.');
+            $finder = new Finder();
+            $finder->name('app.php')->depth(0)->in($dir);
+            $results = iterator_to_array($finder);
+            if (!count($results)) {
+                throw new \RuntimeException('Either set APP_DIR in your phpunit.xml or override the WebTestCase::createApplication() method.');
+            }
+
+            $file = current($results);
+
+            static::$cache['app'] = require_once $file;
         }
 
-        $file = current($results);
-
-        $app = require_once $file;
-
-        return $app;
+        return static::$cache['app'];
     }
 
     /**
@@ -99,11 +103,10 @@ abstract class WebTestCase extends BaseWebTestCase
     public function createApplication()
     {
         $app = static::getApplication();
-        
         $app['debug'] = true;
         unset($app['exception_handler']);
 
-        $this->app['session.test'] = true;
+        // $this->app['session.test'] = true;
 
         return $app;
     }
