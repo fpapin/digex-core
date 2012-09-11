@@ -105,8 +105,8 @@ abstract class WebTestCase extends BaseWebTestCase
     {
         $app = static::getApplication();
         $app['debug'] = true;
-        unset($app['exception_handler']);
-
+        
+        //unset($app['exception_handler']);
         // $this->app['session.test'] = true;
 
         return $app;
