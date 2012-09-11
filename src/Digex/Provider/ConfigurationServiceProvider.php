@@ -14,18 +14,18 @@ class ConfigurationServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        if (!isset($app['env'])) {
-            $app['env'] = null;
-        }
-
         $app['config'] = $app->share(function() use ($app){
+
+            if (!isset($app['config.env'])) {
+                $app['config.env'] = null;
+            }
             
             if (!isset($app['config.config_dir'])) {
                 throw new \RuntimeException('Undefined "config.config_dir" parameter');
             }
 
             $loader = new YamlConfigLoader();
-            $parameters = $loader->load($app['config.config_dir'], $app['env']);
+            $parameters = $loader->load($app['config.config_dir'], $app['config.env']);
 
             return $parameters;
         });
