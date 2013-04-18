@@ -98,16 +98,17 @@ abstract class WebTestCase extends BaseWebTestCase
 
     /**
      * Create an application
-     * 
+     *
      * @return Silex\Application The application
      */
     public function createApplication()
     {
         $app = static::getApplication();
-        $app['debug'] = true;
-        
-        //unset($app['exception_handler']);
-        // $this->app['session.test'] = true;
+
+        // $app['debug'] = true;
+        // $app['exception_handler']->disable();
+
+        $app['session.test'] = true;
 
         return $app;
     }
