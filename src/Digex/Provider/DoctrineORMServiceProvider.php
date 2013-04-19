@@ -4,21 +4,14 @@ namespace Digex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Silex\Provider\DoctrineServiceProvider;
-use Digex\YamlConfigLoader;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Configuration;
-use Doctrine\ORM\Mapping\Driver\DriverChain;
-use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
-use Doctrine\ORM\Mapping\Driver\XmlDriver;
-use Doctrine\ORM\Mapping\Driver\YamlDriver;
-use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Cache\ArrayCache;
 use Digex\Console\Command;
 
 /**
  * @see https://github.com/flintstones/DoctrineOrm
- * 
+ *
  * @author Damien Pitard <dpitard at digitas dot fr>
  * @author Vyacheslav Slinko
  * @copyright Digitas France
@@ -33,6 +26,18 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
 
         $app['em'] = $app->share(function () use ($app) {
             return EntityManager::create($app['db'], $app['em.config'], $app['db.event_manager']);
+        });
+
+        $app['em.annotation.driver'] = $app->share(function () use ($app) {
+            if (isset($app['em.options']['entities'])) {
+                $paths = $app['em.options']['entities'];
+            } else {
+                $paths = array();
+            }
+
+            $config = new Configuration();
+
+            return $config->newDefaultAnnotationDriver($paths);
         });
 
         $app['em.config'] = $app->share(function () use ($app) {
@@ -50,15 +55,7 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
                 $config->setProxyNamespace($app['em.options']['proxy_namespace']);
             }
 
-            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver());
-
-            if (isset($app['em.options']['entities'])) {
-                $paths = $app['em.options']['entities'];
-            } else {
-                $paths = array();
-            }
-
-            $config->setMetadataDriverImpl($config->newDefaultAnnotationDriver($paths));
+            $config->setMetadataDriverImpl($app['em.annotation.driver']);
 
             return $config;
         });
@@ -87,6 +84,6 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             }
         }
     }
-	
+
 	public function boot(Application $app) {}
 }
