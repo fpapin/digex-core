@@ -1,12 +1,12 @@
 <?php
 
-namespace Asset\Provider;
+namespace Digex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Asset\Lib\AssetGenerator;
-use Asset\Extension\AssetExtension;
+use Digex\Lib\AssetGenerator;
+use Digex\Extension\AssetExtension;
 
 /**
  * @author Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Asset\Extension;
+namespace Digex\Extension;
 
 /**
  * @author Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>
