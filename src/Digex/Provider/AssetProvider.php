@@ -5,7 +5,7 @@ namespace Digex\Provider;
 use Silex\Application;
 use Silex\ServiceProviderInterface;
 
-use Digex\Lib\AssetGenerator;
+use Digex\AssetGenerator;
 use Digex\Extension\AssetExtension;
 
 /**
