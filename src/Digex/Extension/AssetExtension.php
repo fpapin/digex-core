@@ -41,6 +41,6 @@ class AssetExtension extends  \Twig_Extension
      */
     public function getName()
     {
-        return 'dilex_asset';
+        return 'asset';
     }
 }
