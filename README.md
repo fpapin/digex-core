@@ -24,8 +24,7 @@ Digex-Core is released under the 3-clause BSD licence.
 
 Please read the LICENCE file.
 
-Authors
--------
+Contributors
+------------
 
-* Damien Pitard (dpitard@digitas.fr)
-* Pierre-Louis Launay (pllaunay@digitas.fr)
+[See the Honour Roll](https://github.com/digitas/digex-core/graphs/contributors)
