@@ -3,16 +3,21 @@
 namespace Digex\Extension;
 
 /**
- * @author Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>
- * @copyright Digitas France
+ * @author    Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>
+ * @author    Damien Pitard <damien.pitard@digitas.fr>
+ * @copyright 2012 Digitas France
  */
 class AssetExtension extends  \Twig_Extension
 {
-    private $assetManager;
+    private $dir;
 
-    function __construct($assetManager)
+    /**
+     * [__construct description]
+     * @param [type] $dir [description]
+     */
+    function __construct($dir)
     {
-        $this->assetManager = $assetManager;
+        $this->dir = $dir;
     }
 
     /**
@@ -31,7 +36,7 @@ class AssetExtension extends  \Twig_Extension
      */
     public function asset($url)
     {
-        return $this->assetManager->asset($url);
+        return sprintf('%s/%s', $this->dir, ltrim($url, '/'));
     }
 
     /**

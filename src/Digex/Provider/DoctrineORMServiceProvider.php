@@ -24,13 +24,14 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             throw new \Exception('Silex\Provider\DoctrineServiceProvider is not registered');
         }
 
-        $app['em'] = $app->share(function () use ($app) {
+        $app['em'] = $app->share(function($app) {
             return EntityManager::create($app['db'], $app['em.config'], $app['db.event_manager']);
         });
 
-        $app['em.annotation.driver'] = $app->share(function () use ($app) {
-            if (isset($app['em.options']['entities'])) {
-                $paths = $app['em.options']['entities'];
+        $app['em.annotation.driver'] = $app->share(function ($app) {
+
+            if (isset($app['em.entities'])) {
+                $paths = $app['em.entities'];
             } else {
                 $paths = array();
             }
@@ -40,7 +41,7 @@ class DoctrineORMServiceProvider implements ServiceProviderInterface
             return $config->newDefaultAnnotationDriver($paths);
         });
 
-        $app['em.config'] = $app->share(function () use ($app) {
+        $app['em.config'] = $app->share(function($app) {
             $config = new Configuration();
 
             $config->setMetadataCacheImpl($app['em.cache']);
