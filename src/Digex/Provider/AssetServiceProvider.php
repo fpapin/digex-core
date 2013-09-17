@@ -12,7 +12,7 @@ use Digex\Extension\AssetExtension;
  * @author Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>
  * @copyright Digitas France
  */
-class AssetProvider implements ServiceProviderInterface
+class AssetServiceProvider implements ServiceProviderInterface
 {
     /**
      * Registers services on the given app.
