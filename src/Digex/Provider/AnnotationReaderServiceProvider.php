@@ -20,17 +20,20 @@ use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
  */
 class AnnotationReaderServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function register(Application $app)
     {
-        $app['annotation.reader'] = $app->share(function () use ($app) {
+        $app['annotation.reader'] = $app->share(function($app) {
 
             $reader = new AnnotationReader();
 
             return new CachedReader($reader, new ArrayCache(), $app['debug']);
         });
 
-        if (isset( $app['em.annotation.driver'])) {
-            $app['em.annotation.driver'] = $app->share($app->extend('em.annotation.driver', function () use ($app) {
+        if (isset($app['em.annotation.driver'])) {
+            $app['em.annotation.driver'] = $app->share($app->extend('em.annotation.driver', function($driver, $app) {
                 if (isset($app['em.options']['entities'])) {
                     $paths = $app['em.options']['entities'];
                 } else {
@@ -42,5 +45,11 @@ class AnnotationReaderServiceProvider implements ServiceProviderInterface
         }
     }
 
-    public function boot(Application $app) {}
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
+    {
+
+    }
 }

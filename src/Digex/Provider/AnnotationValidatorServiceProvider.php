@@ -19,17 +19,27 @@ use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
  */
 class AnnotationValidatorServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function register(Application $app)
     {
-        $app['validator.mapping.class_metadata_factory'] = $app->share($app->extend('validator.mapping.class_metadata_factory', function () use ($app) {
+        $app['validator.mapping.class_metadata_factory'] = $app->share($app->extend('validator.mapping.class_metadata_factory', function ($factory, $app) {
 
             if (isset($app['annotation.reader'])) {
                 return new ClassMetadataFactory(new AnnotationLoader($app['annotation.reader']));
             } else {
-                return new ClassMetadataFactory(new StaticMethodLoader());
+                return $factory;
+                // return new ClassMetadataFactory(new StaticMethodLoader());
             }
         }));
     }
 
-    public function boot(Application $app) {}
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
+    {
+
+    }
 }

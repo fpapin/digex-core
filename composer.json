@@ -12,12 +12,14 @@
         "php": ">=5.3.2"
     },
     "suggest": {
-        "symfony/yaml": "2.1.* | If you want to enable configuration service (ConfigurationServiceProvider)",
+        "monolog/monolog": "1.0.* | If you want to enable logging",
+        "symfony/yaml": "2.1.* | If you want to enable configuration reader (ConfigurationServiceProvider)",
         "symfony/console": ">=2.1,<=2.2 | If you want to enable console service (ConsoleServiceProvider)",
         "doctrine/orm": "2.2.* | If you want to enable Doctrine ORM service (DoctrineORMServiceProvider)",
         "doctrine/data-fixtures": "1.0.* | If you want to enable fixtures load command (LoadDataFixturesDoctrineCommand)",
         "symfony/validator": "2.1.* | If you want to enable validation annotations (AnnotationValidatorServiceProvider)",
-        "twig/twig": "1.9.* | If you want to enable asset twig function (AssetServiceProvider)"
+        "twig/twig": "1.9.* | If you want to enable asset twig function (TwigServiceProvder && AssetServiceProvider)",
+        "symfony/translation": "2.1.* | If you want to enable translation (TranslationServiceProvider)",
     },
     "autoload": {
         "psr-0": { "Digex": "src/" }

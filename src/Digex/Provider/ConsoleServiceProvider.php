@@ -7,18 +7,29 @@ use Silex\ServiceProviderInterface;
 use Digex\Console\Console;
 
 /**
- * @author Damien Pitard <dpitard at digitas.fr>
- * @copyright Digitas France
+ * ConsoleServiceProvider.
+ *
+ * @author    Damien Pitard <dpitard at digitas.fr>
+ * @copyright 2012 Digitas France
  */
 class ConsoleServiceProvider implements ServiceProviderInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function register(Application $app)
     {
-        $app['console'] = $app->share(function () use ($app) {
-            
+        $app['console'] = $app->share(function ($app) {
+
             return new Console($app);
         });
     }
-	
-	public function boot(Application $app) {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function boot(Application $app)
+    {
+
+    }
 }
