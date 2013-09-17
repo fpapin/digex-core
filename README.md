@@ -52,6 +52,10 @@ You can override some parameters:
 
 Digex automatically enables services depending on composer requirements.
 
+To enable console:
+
+    composer require "symfony/console": ">=2.1,<=2.2"
+
 To enable configuration:
 
     composer require "symfony/yaml":"2.1.*" "igorw/config-service-provider":"1.2.*"
