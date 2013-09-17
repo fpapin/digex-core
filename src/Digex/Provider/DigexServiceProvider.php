@@ -129,7 +129,6 @@ class DigexServiceProvider implements ServiceProviderInterface
                 }
 
                 $loader = require $app['digex.loader_file'];
-
                 \Doctrine\Common\Annotations\AnnotationRegistry::registerLoader(array($loader, 'loadClass'));
 
                 $app->register(new \Digex\Provider\AnnotationReaderServiceProvider());

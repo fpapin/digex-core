@@ -34,8 +34,8 @@ class AnnotationReaderServiceProvider implements ServiceProviderInterface
 
         if (isset($app['em.annotation.driver'])) {
             $app['em.annotation.driver'] = $app->share($app->extend('em.annotation.driver', function($driver, $app) {
-                if (isset($app['em.options']['entities'])) {
-                    $paths = $app['em.options']['entities'];
+                if (isset($app['em.entities'])) {
+                    $paths = $app['em.entities'];
                 } else {
                     $paths = array();
                 }
