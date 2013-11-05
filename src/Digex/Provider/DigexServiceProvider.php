@@ -97,11 +97,11 @@ class DigexServiceProvider implements ServiceProviderInterface
             if (class_exists('Doctrine\ORM\EntityManager')) {
 
                 if (!isset($app['digex.cache_dir'])) {
-                    $app['digex.cache_dir'] = $app['digex.app_dir'] . '/cache';
+                    $app['digex.cache_dir'] = $app['digex.app_dir'] . '/cache/' . (isset($env) ? $env : 'prod');
                 }
 
                 $options = array(
-                    'proxy_dir'         => $app['digex.cache_dir'] . '/' . (isset($env) ? $env : 'prod') . '/proxies',
+                    'proxy_dir'         => $app['digex.cache_dir'] . '/proxies',
                     'proxy_namespace'   => 'DoctrineORMProxy'
                 );
 
@@ -149,7 +149,7 @@ class DigexServiceProvider implements ServiceProviderInterface
                 }
 
                 if (!isset($app['digex.cache_dir'])) {
-                    $app['digex.cache_dir'] = $app['digex.app_dir'] . '/cache';
+                    $app['digex.cache_dir'] = $app['digex.app_dir'] . '/cache/' . (isset($env) ? $env : 'prod');
                 }
 
 
@@ -157,7 +157,7 @@ class DigexServiceProvider implements ServiceProviderInterface
                 $app->register(new \Silex\Provider\TwigServiceProvider(), array(
                     'twig.path' => $app['digex.template_dir'],
                     'twig.options' => array(
-                        'cache' => $app['digex.cache_dir'] . '/'  . (isset($env) ? $env : 'prod') . '/twig',
+                        'cache' => $app['digex.cache_dir'] . '/twig',
                         'debug' => $app['debug']
                     )
                 ));
