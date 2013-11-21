@@ -10,7 +10,8 @@
     ],
     "require": {
         "php": ">=5.3.2",
-        "silex/silex": "~1.0@dev"
+        "silex/silex": "~1.0@dev",
+        "symfony/filesystem": "2.1.*"
     },
     "suggest": {
         "symfony/console": ">=2.1,<=2.2 | To enable console",
