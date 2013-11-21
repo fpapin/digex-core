@@ -58,20 +58,23 @@ EOT
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $targetArg = rtrim($input->getArgument('target'), '/');
-        $originArg = $input->getArgument('origin') . '/';
+        $originArg = $input->getArgument('origin');
+        $output->writeln(sprintf('Deploy assets from <comment>%s</comment> folder to <comment>%s</comment> folder', $originArg, $targetArg));
+        $output->writeln(' ');
 
         $finder = new Finder();
         $finder->directories()->name('public')->in($originArg);
         $filesystem = new Filesystem();
 
         foreach ($finder as $file) {
-            $originDir =  $originArg . $file->getRelativePathname();
+            $originDir =  $originArg . '/' . $file->getRelativePathname();
             $explodeFilePath = explode('/', trim($file->getRelativePathname(), '/'));
             $bundleName = $explodeFilePath[count($explodeFilePath) - 3];
             $bundlesDir = $targetArg . '/';
             $targetDir  = $bundlesDir . $bundleName;
             $filesystem->mkdir($targetDir, 0777);
             $filesystem->mirror($originDir, $targetDir, Finder::create()->in($originDir));
+            $output->writeln(sprintf('Installing assets for <comment>%s</comment> into <comment>%s</comment>', $bundleName, $targetDir));
         }
     }
 }
