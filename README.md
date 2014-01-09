@@ -135,3 +135,7 @@ Contributors
 ------------
 
 [See the Honour Roll](https://github.com/digitas/digex-core/graphs/contributors)
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/digitas/digex-core/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
