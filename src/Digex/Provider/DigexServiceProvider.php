@@ -55,6 +55,11 @@ class DigexServiceProvider implements ServiceProviderInterface
                 }
             }
 
+            if (class_exists('Symfony\Component\Security\Core\SecurityContext')) {
+                $app->register(new \Silex\Provider\SessionServiceProvider());
+                $app->register(new \Silex\Provider\SecurityServiceProvider());
+            }
+
             if (class_exists('Igorw\Silex\ConfigServiceProvider')) {
 
                 if (!isset($app['digex.config_files'])) {
@@ -176,10 +181,6 @@ class DigexServiceProvider implements ServiceProviderInterface
                 $app->register(new \Silex\Provider\FormServiceProvider());
             }
 
-            if (class_exists('Symfony\Component\Security\Core\SecurityContext')) {
-                $app->register(new \Silex\Provider\SessionServiceProvider());
-                $app->register(new \Silex\Provider\SecurityServiceProvider());
-            }
         });
 
         $app['digex.init']($app);

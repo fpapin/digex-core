@@ -4,12 +4,8 @@ namespace Digex\Provider;
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
-use Silex\ConstraintValidatorFactory;
-use Symfony\Component\Validator\Validator;
 use Symfony\Component\Validator\Mapping\ClassMetadataFactory;
 use Symfony\Component\Validator\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Validator\DefaultTranslator;
-use Symfony\Component\Validator\Mapping\Loader\StaticMethodLoader;
 
 /**
  * Replace the standard silex validator provider to support validation annotations
@@ -30,7 +26,6 @@ class AnnotationValidatorServiceProvider implements ServiceProviderInterface
                 return new ClassMetadataFactory(new AnnotationLoader($app['annotation.reader']));
             } else {
                 return $factory;
-                // return new ClassMetadataFactory(new StaticMethodLoader());
             }
         }));
     }
