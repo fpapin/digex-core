@@ -8,6 +8,8 @@ use Silex\ServiceProviderInterface;
 use Digex\AssetGenerator;
 use Digex\Extension\AssetExtension;
 
+use Digex\Console\Command\AssetsInstallCommand;
+
 /**
  * @author    Stéphane EL MANOUNI <stephane dot elmanouni at digitas dot fr>
  * @copyright 2012 Digitas France
@@ -35,6 +37,10 @@ class AssetServiceProvider implements ServiceProviderInterface
 
             return $twig;
         }));
+
+        if(isset($app['console'])) {
+            $app['console']->add(new AssetsInstallCommand());
+        }
     }
 
     /**
